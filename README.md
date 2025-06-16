@@ -1,6 +1,6 @@
 # VoA (VPN over Analyzer): DPI Validation Scripts
 
-This repository contains Python scripts and configurations designed for **VoA (VPN over Analyzer)** – a framework to systematically validate the Deep Packet Inspection (DPI) capabilities of network security tools like Zeek and Suricata. The core objective is to rigorously test how effectively these tools can identify and differentiate between various types of network traffic, especially when common protocols are intentionally obfuscated within VPN tunnels (e.g., SoftEther VPN over TCP 443, TCP 53, or ICMP).
+This repository contains Python scripts and configurations designed for **VoA (VPN over Analyzer)** – a framework to systematically validate the Deep Packet Inspection (DPI) capabilities of network security tools like Zeek and Suricata. The core objective is to rigorously test how effectively these tools can identify and differentiate between various types of network traffic, especially when common protocols are intentionally obfuscated within VPN tunnels (e.g., SoftEther VPN TCP 443, TCP 53, VPN over DNS and VPN over ICMP).
 
 ---
 
@@ -35,6 +35,9 @@ A critical feature of this framework is the embedding of a **unique Packet ID** 
 ## Getting Started
 
 ### Prerequisites
+
+Recommended Virtualization Platform
+For setting up the virtual machine environment (TX, MX, RX VMs), Proxmox Virtual Environment is highly recommended. Proxmox offers a robust, open-source platform that is excellent for managing virtual machines and containers, making it ideal for this DPI validation setup. Its web-based management interface simplifies VM creation, network configuration, and snapshot management, which are crucial for this kind of experimental network environment.
 
 Before you begin, ensure the following components are set up and configured:
 
