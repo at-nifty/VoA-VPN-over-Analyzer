@@ -1,5 +1,4 @@
 # VoA (VPN over Analyzer): DPI Validation Scripts
-![VoA Logo](https://github.com/at-nifty/VoA-VPN-over-Analyzer/blob/main/Photo/VoA%20Logo.png?raw=true)
 
 This repository contains Python scripts and configurations designed for **VoA (VPN over Analyzer)** – a framework to systematically validate the Deep Packet Inspection (DPI) capabilities of network security tools like Zeek and Suricata. The core objective is to rigorously test how effectively these tools can identify and differentiate between various types of network traffic, especially when common protocols are intentionally obfuscated within VPN tunnels (e.g., SoftEther VPN TCP 443, TCP 53, VPN over DNS and VPN over ICMP).
 
