@@ -15,7 +15,7 @@ TARGET_HTTP_SERVER = "example.com"  # HTTP/HTTPSターゲット
 TARGET_DNS_SERVER = "8.8.8.8"      # DNSクエリのターゲットDNSサーバー (インターネット上のパブリックDNSが適切)
 TARGET_ICMP_HOST = "8.8.8.8"       # ICMPターゲット (インターネット上のパブリックIPが適切)
 
-# TX VMのNIC名 (お使いの環境に合わせて正確なNIC名を指定してください)
+# TX VMのNIC名 (お使いの環境に合わせて正確なNIC名を指定)
 PHYSICAL_NIC = "ens18" # 例: eth0, enp0s3など、TX VMの物理NIC名
 VPN_VIRTUAL_NIC = "vpn_vpn01" # 例: se0, tap_softetherなど、SoftEther VPNが作成する仮想NIC名
 
@@ -38,7 +38,7 @@ def init_log_file():
 # --- ログ書き込み関数 ---
 def write_log(protocol, traffic_id, send_nic, expected_protocol, destination, detail=""):
     """通信情報をログファイルに追記する"""
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3] # ミリ秒まで
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
     with open(LOG_FILE, 'a', newline='') as f:
         writer = csv.writer(f)
         writer.writerow([timestamp, protocol, traffic_id, send_nic, expected_protocol, destination, detail])
@@ -62,7 +62,7 @@ def get_interface_ip(iface_name):
 def send_http(send_nic_name):
     """HTTP GETリクエストを送信し、パケットIDをヘッダーとURLに埋め込む"""
     traffic_id = str(uuid.uuid4())
-    url = f"http://{TARGET_HTTP_SERVER}/test_http?id={traffic_id}" # URLパラメータにIDを含める
+    url = f"http://{TARGET_HTTP_SERVER}/test_http?id={traffic_id}"
     
     source_ip = get_interface_ip(send_nic_name)
     if not source_ip:
@@ -121,8 +121,8 @@ def send_dns_query(send_nic_name):
     resolver.nameservers = [TARGET_DNS_SERVER]
     
     # dnspython で送信元IPを直接バインドする公式な方法はないため、
-    # OSが source_ip に基づいてルーティングすることを期待します。
-    # 厳密なバインドが必要な場合は、socketモジュールを直接使用する必要があります。
+    # OSが source_ip に基づいてルーティングすることを期待。
+    # 厳密なバインドが必要な場合は、socketモジュールを直接使用する。
 
     try:
         print(f"  Sending DNS query from {send_nic_name} ({source_ip}) for {query_name} to {TARGET_DNS_SERVER}")
@@ -178,7 +178,7 @@ def main():
     time.sleep(5) # ユーザーがメッセージを読むための待機時間
 
     # 送信する通信とNICの組み合わせを定義
-    # ここで送りたいプロトコルと送信NICの組み合わせを自由に記述・調整できます。
+    # ここで送りたいプロトコルと送信NICの組み合わせを記述。
     traffic_scenarios = [
         (send_http, PHYSICAL_NIC, "HTTP (Direct)"),
         (send_https, PHYSICAL_NIC, "HTTPS (Direct)"),
@@ -191,16 +191,14 @@ def main():
         (send_icmp_ping, VPN_VIRTUAL_NIC, "ICMP (via VPN)"),
     ]
 
-    for cycle in range(2): # 各シナリオを複数回実行
+    for cycle in range(2):
         print(f"\n--- Traffic Generation Cycle {cycle + 1} ---")
         for func, nic, description in traffic_scenarios:
             print(f"  Executing: {description} via {nic}")
             func(nic)
-            time.sleep(2) # 各通信間に少し間隔を空ける
+            time.sleep(2)
 
     print("\nTraffic generation finished. Log saved to tx_traffic_log.csv")
 
 if __name__ == "__main__":
-    # Scapyのsend()を使用するため、root権限で実行する必要があります。
-    # Linux環境では: sudo python3 traffic_generator.py
     main()
